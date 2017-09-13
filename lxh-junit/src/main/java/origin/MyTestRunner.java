@@ -3,13 +3,16 @@ package origin;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Developed by Lee Happily.
  */
 public class MyTestRunner {
     public static void main(String[] args) throws Throwable {
-        String[] params = new String[]{"origin.TestExampleª"};
+        String[] params = new String[]{"origin.CalculatorTest"};
         new MyTestRunner().start(params);
     }
 
@@ -52,7 +55,8 @@ public class MyTestRunner {
         Constructor<?> constructor = theClass.getConstructor();
         Object instance = constructor.newInstance();
         Method[] methods = theClass.getDeclaredMethods();
-        for (Method each : methods) {
+        List<Method> testMethods = filterTestMethods(methods);
+        for (Method each : testMethods) {
             try {
                 each.invoke(instance);
             } catch (InvocationTargetException e) {
@@ -64,4 +68,28 @@ public class MyTestRunner {
             }
         }
     }
+
+    private List<Method> filterTestMethods(Method[] methods) {
+        List<Method> testMethodsList = new ArrayList<Method>();
+        for (Method method : methods) {
+            if (!isPublicTestMethod(method)) {
+                return testMethodsList;
+            }
+            testMethodsList.add(method);
+        }
+
+        return testMethodsList;
+    }
+
+    private boolean isPublicTestMethod(Method method) {
+        return isTestMethod(method) && Modifier.isPublic(method.getModifiers());
+    }
+
+    private boolean isTestMethod(Method m) {
+        return m.getParameterTypes().length == 0 &&
+                m.getName().startsWith("test") &&
+                m.getReturnType().equals(Void.TYPE);
+    }
+
+
 }
