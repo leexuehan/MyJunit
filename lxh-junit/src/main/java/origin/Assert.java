@@ -1,11 +1,26 @@
 package origin;
 
+import java.util.Observable;
+
 /**
  * Developed by Lee Happily.
  */
 public class Assert {
+    static public void assertTrue(boolean condition) throws AssertionFailedError {
+        if (!condition) {
+            fail(null);
+        }
+    }
+
+
     public static void assertEquals(Object expected, Object actual) throws AssertionFailedError {
         assertEquals(null, expected, actual);
+    }
+
+
+    static public void failSame(String message) throws AssertionFailedError {
+        String formatted = (message != null) ? message + " " : "";
+        fail(formatted + "expected not same");
     }
 
     public static void assertEquals(String message, Object expected, Object actual) throws AssertionFailedError {
