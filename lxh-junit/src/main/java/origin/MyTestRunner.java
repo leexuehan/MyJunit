@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class MyTestRunner {
     public static void main(String[] args) throws Throwable {
-        String[] params = new String[]{"origin.CalculatorTest"};
+        String[] params = new String[]{"example.CalculatorTest"};
         new MyTestRunner().start(params);
     }
 

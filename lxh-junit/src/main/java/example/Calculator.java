@@ -1,4 +1,4 @@
-package origin;
+package example;
 
 /**
  * Developed by Lee Happily.
